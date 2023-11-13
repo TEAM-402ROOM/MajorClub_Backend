@@ -60,11 +60,11 @@ public class JwtProvider implements InitializingBean {
                 .compact();
     }
 
-    public String extractEmailWithAccessToken(String email) {
+    public String extractEmail(String jwt) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(email)
+                .parseClaimsJws(jwt)
                 .getBody()
                 .getSubject();
     }
@@ -93,14 +93,5 @@ public class JwtProvider implements InitializingBean {
                         .toList();
         AuthDetails authDetails = (AuthDetails) authDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(authDetails, jwt, authorities);
-    }
-
-    public String extractEmailWithRefreshToken(String refreshToken) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(refreshToken)
-                .getBody()
-                .getSubject();
     }
 }

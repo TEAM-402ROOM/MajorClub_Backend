@@ -1,6 +1,8 @@
 package com.major.club.domain.auth.service;
 
+import com.major.club.domain.auth.domain.RefreshToken;
 import com.major.club.domain.auth.presentation.dto.response.TokenResponse;
+import com.major.club.domain.auth.repository.RefreshTokenRepository;
 import com.major.club.domain.user.domain.Authority;
 import com.major.club.domain.user.domain.User;
 import com.major.club.domain.user.repository.UserRepository;
@@ -27,6 +29,7 @@ public class UserLoginService {
     private String BSM_AUTH_CLIENT_SECRET;
 
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
 
     public ResponseEntity<TokenResponse> execute(String code) throws BsmOAuthInvalidClientException, IOException, BsmOAuthCodeNotFoundException, BsmOAuthTokenNotFoundException {
@@ -48,6 +51,13 @@ public class UserLoginService {
         }
         String access_token = jwtProvider.createAccessToken(resource.getEmail());
         String refresh_token = jwtProvider.createRefreshToken(resource.getEmail());
+
+        refreshTokenRepository.save(RefreshToken.builder()
+                .accessToken(access_token)
+                .refreshToken(refresh_token)
+                .email(resource.getEmail())
+                .build());
+
         return ResponseEntity.ok(TokenResponse.builder()
                 .access_token(access_token)
                 .refresh_token(refresh_token)
