@@ -1,10 +1,24 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/club
-    username: root
-    password: qwer1234
+    url: ${URL}
+    username: ${DB_NAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
 
 server:
   servlet:
     context-path: /api
+
+bsm:
+  client_id: f557b1bb
+  client_secret: 4f7419eb99949b5c43202c52acb3dcf6
+  redirect_uri: https://auth.bssm.kro.kr/oauth?clientId=f557b1bb&redirectURI=http://localhost:8080/auth/bsm
+
+jwt:
+  secret_key: thisisjwtsecretkeyinymlthisisjwtsecretkeyinymlthisisjwtsecretkeyinymlthisisjwtsecretkeyinyml
