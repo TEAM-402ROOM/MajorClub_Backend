@@ -1,5 +1,6 @@
 package com.major.club.domain.user.domain;
 
+import com.major.club.domain.club.domain.Club;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +35,10 @@ public class User {
     @Column
     private String email;
 
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Club club;
+
     @Builder
     public User(String name, Authority authority, int studentNumber, int grade, int classNumber, boolean isGraduated, String email) {
         this.name = name;
@@ -43,5 +48,10 @@ public class User {
         this.classNumber = classNumber;
         this.isGraduated = isGraduated;
         this.email = email;
+        this.club = null;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
     }
 }
