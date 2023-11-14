@@ -13,8 +13,9 @@ public class ClubController {
 
     private final MakeClubService makeClubService;
 
-    @PostMapping("/join")
+    @PostMapping("/make")
     public ResponseEntity<String> makeClub(@RequestBody PostClubRequest postClubRequest) {
         return makeClubService.execute(postClubRequest);
     }
+
 }
