@@ -6,7 +6,7 @@ import com.major.club.domain.auth.repository.RefreshTokenRepository;
 import com.major.club.domain.user.domain.Authority;
 import com.major.club.domain.user.domain.User;
 import com.major.club.domain.user.repository.UserRepository;
-import com.major.club.global.jwt.JwtProvider;
+import com.major.club.global.jwt.utils.JwtProvider;
 import leehj050211.bsmOauth.BsmOauth;
 import leehj050211.bsmOauth.dto.resource.BsmUserResource;
 import leehj050211.bsmOauth.exception.BsmOAuthCodeNotFoundException;

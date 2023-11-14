@@ -1,5 +1,6 @@
-package com.major.club.global.jwt;
+package com.major.club.global.jwt.filter;
 
+import com.major.club.global.jwt.utils.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

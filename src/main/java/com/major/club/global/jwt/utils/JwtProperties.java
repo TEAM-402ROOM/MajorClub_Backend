@@ -1,4 +1,4 @@
-package com.major.club.global.jwt;
+package com.major.club.global.jwt.utils;
 
 public class JwtProperties {
     public static final Long ACCESS_TOKEN_EXPIRED = 1000 * 60 * 30L;
