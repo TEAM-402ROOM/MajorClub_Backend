@@ -3,6 +3,6 @@ package com.major.club.domain.club.presentation.dto.request;
 import lombok.Getter;
 
 @Getter
-public class PostClubRequest {
+public class ClubRequest {
     private String name;
 }

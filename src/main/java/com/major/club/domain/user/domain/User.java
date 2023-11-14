@@ -50,4 +50,8 @@ public class User {
         this.email = email;
         this.club = null;
     }
+
+    public void setClub(Club club) {
+        this.club = club;
+    }
 }
