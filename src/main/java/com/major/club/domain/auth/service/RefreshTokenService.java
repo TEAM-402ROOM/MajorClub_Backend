@@ -3,7 +3,7 @@ package com.major.club.domain.auth.service;
 import com.major.club.domain.auth.domain.RefreshToken;
 import com.major.club.domain.auth.presentation.dto.response.NewAccessTokenResponse;
 import com.major.club.domain.auth.repository.RefreshTokenRepository;
-import com.major.club.global.jwt.JwtProvider;
+import com.major.club.global.jwt.utils.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

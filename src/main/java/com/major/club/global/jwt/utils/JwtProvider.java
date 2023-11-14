@@ -1,4 +1,4 @@
-package com.major.club.global.jwt;
+package com.major.club.global.jwt.utils;
 
 import com.major.club.domain.user.domain.User;
 import com.major.club.domain.user.repository.UserRepository;

@@ -1,7 +1,7 @@
 package com.major.club.global.security;
 
-import com.major.club.global.jwt.JwtFilter;
-import com.major.club.global.jwt.JwtProvider;
+import com.major.club.global.jwt.filter.JwtFilter;
+import com.major.club.global.jwt.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
