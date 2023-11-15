@@ -28,7 +28,7 @@ public class RefreshTokenService {
                     .body("토큰이 DB에 존재하지 않습니다.");
         }
 
-        String email = jwtProvider.extractEmail(refreshToken);
+        String email = jwtProvider.extractEmailWithRefreshToken(refreshToken);
         Optional<RefreshToken> getToken = refreshTokenRepository.findByEmail(email);
 
         if (getToken.isEmpty()) {

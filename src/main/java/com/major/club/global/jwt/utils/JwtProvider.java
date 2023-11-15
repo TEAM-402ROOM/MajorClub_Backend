@@ -7,6 +7,7 @@ import com.major.club.global.auth.details.AuthDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,11 +61,11 @@ public class JwtProvider implements InitializingBean {
                 .compact();
     }
 
-    public String extractEmail(String jwt) {
+    public String extractEmail(HttpServletRequest request) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(jwt)
+                .parseClaimsJws(request.getHeader("Authorization").split(" ")[1].trim())
                 .getBody()
                 .getSubject();
     }
@@ -93,5 +94,14 @@ public class JwtProvider implements InitializingBean {
                         .toList();
         AuthDetails authDetails = (AuthDetails) authDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(authDetails, jwt, authorities);
+    }
+
+    public String extractEmailWithRefreshToken(String refreshToken) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(refreshToken)
+                .getBody()
+                .getSubject();
     }
 }
