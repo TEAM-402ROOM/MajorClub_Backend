@@ -21,11 +21,8 @@ public class JoinClubService {
     private final JwtProvider jwtProvider;
 
     public ResponseEntity<String> execute(ClubRequest clubRequest, HttpServletRequest request) {
-        User user = userRepository.findByEmail(
-                jwtProvider.extractEmail(
-                        request.getHeader("Authorization").split(" ")[1].trim()
-                )
-        ).orElseThrow(() -> new UsernameNotFoundException("No User"));
+        User user = userRepository.findByEmail(jwtProvider.extractEmail(request))
+                .orElseThrow(() -> new UsernameNotFoundException("No User"));
 
         Club club = clubRepository.findByName(clubRequest.getName()).orElseThrow(
                 () -> new UsernameNotFoundException("No Club"));
