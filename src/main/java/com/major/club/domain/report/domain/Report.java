@@ -39,6 +39,12 @@ public class Report {
     @Column
     private String feedbackFromTeacher;
 
+    @Column
+    private int year;
+
+    @Column
+    private int month;
+
     @ManyToOne
     @JoinColumn(name = "id")
     private Club club;
