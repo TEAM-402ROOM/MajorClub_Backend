@@ -46,7 +46,7 @@ public class Report {
     private int month;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "club_id")
     private Club club;
 
 }
