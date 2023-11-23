@@ -33,6 +33,6 @@ public class Application {
     private String etc;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 }
