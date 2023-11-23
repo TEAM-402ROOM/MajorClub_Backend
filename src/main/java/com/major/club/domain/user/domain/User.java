@@ -36,7 +36,7 @@ public class User {
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "club_id")
     private Club club;
 
     @Builder
