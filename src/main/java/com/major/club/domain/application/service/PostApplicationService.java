@@ -28,7 +28,7 @@ public class PostApplicationService {
                         .count(applicationRequest.getCount())
                         .url(applicationRequest.getUrl())
                         .price(applicationRequest.getPrice())
-                        .usage(applicationRequest.getUsage())
+                        .usageDescription(applicationRequest.getUsage())
                         .etc(applicationRequest.getEtc())
                         .user(user)
                         .build()

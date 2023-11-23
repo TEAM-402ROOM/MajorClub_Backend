@@ -27,7 +27,7 @@ public class Application {
     private int price;
 
     @Column
-    private String usage;
+    private String usageDescription;
 
     @Column
     private String etc;
