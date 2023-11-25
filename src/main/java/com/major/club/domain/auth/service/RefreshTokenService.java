@@ -1,6 +1,7 @@
 package com.major.club.domain.auth.service;
 
 import com.major.club.domain.auth.domain.RefreshToken;
+import com.major.club.domain.auth.exception.RefreshTokenNotFoundException;
 import com.major.club.domain.auth.presentation.dto.response.NewAccessTokenResponse;
 import com.major.club.domain.auth.repository.RefreshTokenRepository;
 import com.major.club.global.jwt.utils.JwtProvider;
@@ -20,12 +21,17 @@ public class RefreshTokenService {
     private final JwtProvider jwtProvider;
 
     public ResponseEntity<?> execute(HttpServletRequest request) {
-        String accessToken = request.getHeader("Authorization").split(" ")[1].trim();
-        String refreshToken = request.getHeader("Authorization-Refresh").split(" ")[1].trim();
+        String refreshToken = request.getHeader("Authorization-Refresh");
 
-        if (refreshTokenRepository.findByAccessToken(accessToken).isEmpty()) {
+        if (refreshToken == null) {
+            throw RefreshTokenNotFoundException.EXCEPTION;
+        }
+
+        refreshToken = refreshToken.split(" ")[1].trim();
+
+        if (refreshTokenRepository.findByRefreshToken(refreshToken).isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("토큰이 DB에 존재하지 않습니다.");
+                    .body   ("토큰이 DB에 존재하지 않습니다.");
         }
 
         String email = jwtProvider.extractEmailWithRefreshToken(refreshToken);
