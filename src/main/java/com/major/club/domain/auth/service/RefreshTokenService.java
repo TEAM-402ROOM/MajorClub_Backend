@@ -2,6 +2,7 @@ package com.major.club.domain.auth.service;
 
 import com.major.club.domain.auth.domain.RefreshToken;
 import com.major.club.domain.auth.exception.RefreshTokenHeaderNotFoundException;
+import com.major.club.domain.auth.exception.RefreshTokenNotFoundException;
 import com.major.club.domain.auth.presentation.dto.response.NewAccessTokenResponse;
 import com.major.club.domain.auth.repository.RefreshTokenRepository;
 import com.major.club.global.jwt.utils.JwtProvider;
@@ -30,8 +31,7 @@ public class RefreshTokenService {
         refreshToken = refreshToken.split(" ")[1].trim();
 
         if (refreshTokenRepository.findByRefreshToken(refreshToken).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("토큰이 DB에 존재하지 않습니다.");
+            throw RefreshTokenNotFoundException.EXCEPTION;
         }
 
         String email = jwtProvider.extractEmailWithRefreshToken(refreshToken);
