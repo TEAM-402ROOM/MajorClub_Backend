@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
-    REFRESH_TOKEN_NOT_FOUND(404, "Refresh Token Not Found");
+    REFRESH_TOKEN_HEADER_NOT_FOUND(404, "Refresh Token Not Found");
 
     private final int status;
     private final String message;
