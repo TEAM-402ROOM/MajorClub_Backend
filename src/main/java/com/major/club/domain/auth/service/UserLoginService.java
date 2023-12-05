@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,11 +53,20 @@ public class UserLoginService {
         String access_token = jwtProvider.createAccessToken(resource.getEmail());
         String refresh_token = jwtProvider.createRefreshToken(resource.getEmail());
 
-        refreshTokenRepository.save(RefreshToken.builder()
-                .accessToken(access_token)
-                .refreshToken(refresh_token)
-                .email(resource.getEmail())
-                .build());
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByEmail(resource.getEmail());
+
+        if (optionalRefreshToken.isEmpty()) {
+            refreshTokenRepository.save(RefreshToken.builder()
+                    .accessToken(access_token)
+                    .refreshToken(refresh_token)
+                    .email(resource.getEmail())
+                    .build());
+        } else {
+            RefreshToken refreshToken = optionalRefreshToken.get();
+            refreshToken.setAccessToken(access_token);
+            refreshToken.setRefreshToken(refresh_token);
+        }
+
 
         return ResponseEntity.ok(TokenResponse.builder()
                 .access_token(access_token)
