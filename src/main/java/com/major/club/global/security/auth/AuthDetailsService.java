@@ -1,21 +1,20 @@
-package com.major.club.global.auth.details;
+package com.major.club.global.security.auth;
 
 import com.major.club.domain.user.repository.UserRepository;
+import com.major.club.global.jwt.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class AuthDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
-
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         return userRepository.findByEmail(email)
                 .map(AuthDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException(email + " 유저가 DB에 없습니다."));
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }

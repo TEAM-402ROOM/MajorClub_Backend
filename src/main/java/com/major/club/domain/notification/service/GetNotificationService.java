@@ -1,11 +1,10 @@
 package com.major.club.domain.notification.service;
 
 import com.major.club.domain.club.domain.Club;
-import com.major.club.domain.notification.domain.Notification;
 import com.major.club.domain.notification.presentation.dto.response.NotificationResponse;
 import com.major.club.domain.notification.repository.NotificationRepository;
 import com.major.club.domain.user.repository.UserRepository;
-import com.major.club.global.jwt.utils.JwtProvider;
+import com.major.club.global.jwt.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,11 +20,11 @@ public class GetNotificationService {
 
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
 
     public ResponseEntity<List<NotificationResponse>> execute(HttpServletRequest request) {
         Club club = userRepository.findByEmail(
-                jwtProvider.extractEmail(request)
+                jwtUtil.extractEmail(request)
         ).orElseThrow(() -> new UsernameNotFoundException("No user")).getClub();
         return ResponseEntity.ok(
                 notificationRepository.findAllByIsAllStudentTrueOrClub(club.getName())

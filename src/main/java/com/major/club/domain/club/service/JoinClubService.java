@@ -5,7 +5,7 @@ import com.major.club.domain.club.presentation.dto.request.ClubRequest;
 import com.major.club.domain.club.repository.ClubRepository;
 import com.major.club.domain.user.domain.User;
 import com.major.club.domain.user.repository.UserRepository;
-import com.major.club.global.jwt.utils.JwtProvider;
+import com.major.club.global.jwt.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +18,9 @@ public class JoinClubService {
 
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
-
+    private final JwtUtil jwtUtil;
     public ResponseEntity<String> execute(ClubRequest clubRequest, HttpServletRequest request) {
-        User user = userRepository.findByEmail(jwtProvider.extractEmail(request))
+        User user = userRepository.findByEmail(jwtUtil.extractEmail(request))
                 .orElseThrow(() -> new UsernameNotFoundException("No User"));
 
         Club club = clubRepository.findByName(clubRequest.getName()).orElseThrow(

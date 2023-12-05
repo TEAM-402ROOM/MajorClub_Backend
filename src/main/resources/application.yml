@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${URL}
+    url: ${DB_URL}
     username: ${DB_NAME}
     password: ${DB_PASSWORD}
 
@@ -16,9 +16,11 @@ server:
     context-path: /api
 
 bsm:
-  client_id: f557b1bb
-  client_secret: 4f7419eb99949b5c43202c52acb3dcf6
-  redirect_uri: https://auth.bssm.kro.kr/oauth?clientId=f557b1bb&redirectURI=http://localhost:8080/auth/bsm
+  client_id: ${BSM_CLIENT_ID}
+  client_secret: ${BSM_CLIENT_SECRET}
+  redirect_uri: ${BSM_REDIRECT_URI}
 
 jwt:
-  secret_key: thisisjwtsecretkeyinymlthisisjwtsecretkeyinymlthisisjwtsecretkeyinymlthisisjwtsecretkeyinyml
+  secretKey: ${JWT_SECRET_KEY}
+  accessExp: ${JWT_ACCESS_TOKEN_EXP}
+  refreshExp: ${JWT_REFRESH_TOKEN_EXP}

@@ -27,7 +27,7 @@ public class AuthController {
     }
 
     @PutMapping("/refresh")
-    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+    public ResponseEntity<?> refreshAccessToken(HttpServletRequest request) {
         return refreshTokenService.execute(request);
     }
 }
