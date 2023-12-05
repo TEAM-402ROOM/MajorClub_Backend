@@ -1,7 +1,8 @@
 package com.major.club.global.security;
 
+import com.major.club.domain.auth.repository.RefreshTokenRepository;
 import com.major.club.global.jwt.filter.JwtFilter;
-import com.major.club.global.jwt.utils.JwtProvider;
+import com.major.club.global.jwt.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtProvider jwtProvider;
-
+    private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -34,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
                                 .anyRequest().permitAll())
-                .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtUtil, refreshTokenRepository), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

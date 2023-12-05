@@ -4,7 +4,7 @@ import com.major.club.domain.report.domain.Report;
 import com.major.club.domain.report.presentation.dto.request.ReportRequest;
 import com.major.club.domain.report.repository.ReportRepository;
 import com.major.club.domain.user.repository.UserRepository;
-import com.major.club.global.jwt.utils.JwtProvider;
+import com.major.club.global.jwt.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class PostReportService {
 
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
 
     public ResponseEntity<String> execute(ReportRequest request, HttpServletRequest httpServletRequest) {
 
@@ -33,7 +33,7 @@ public class PostReportService {
                         .month(request.getMonth())
                         .club(
                                 userRepository.findByEmail(
-                                jwtProvider.extractEmail(httpServletRequest)).orElseThrow(() -> new UsernameNotFoundException("No user")).getClub())
+                                        jwtUtil.extractEmail(httpServletRequest)).orElseThrow(() -> new UsernameNotFoundException("No user")).getClub())
                         .build()
         );
         return ResponseEntity.ok("success");

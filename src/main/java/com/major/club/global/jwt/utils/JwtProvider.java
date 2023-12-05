@@ -2,106 +2,41 @@ package com.major.club.global.jwt.utils;
 
 import com.major.club.domain.user.domain.User;
 import com.major.club.domain.user.repository.UserRepository;
-import com.major.club.global.auth.details.AuthDetails;
-import com.major.club.global.auth.details.AuthDetailsService;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
+import com.major.club.global.jwt.exception.UserNotFoundException;
+import com.major.club.global.jwt.properties.JwtProperties;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.*;
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-public class JwtProvider implements InitializingBean {
-
-    @Value("${jwt.secret_key}")
-    private String secretKey;
-    private Key key;
-
+public class JwtProvider {
     private final UserRepository userRepository;
-    private String AUTHORIZATION_KEY = "majorclubkey";
+    private final JwtProperties jwtProperties;
 
-    private final AuthDetailsService authDetailsService;
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    public String createAccessToken(String code) {
-        return createToken(code, JwtProperties.ACCESS_TOKEN_EXPIRED);
+    public String createAccessToken(String email) {
+        return createToken(email, jwtProperties.getAccessExp());
     }
 
     public String createRefreshToken(String code) {
-        return createToken(code, JwtProperties.REFRESH_TOKEN_EXPIRED);
+        return createToken(code, jwtProperties.getRefreshExp());
     }
 
-    private String createToken(String code, Long validation) {
+    private String createToken(String email, Long validation) {
         Date now = new Date();
-        User user = userRepository.findByEmail(code).orElseThrow(() -> new UsernameNotFoundException("No user"));
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> UserNotFoundException.EXCEPTION
+        );
 
         return Jwts.builder()
-                .setSubject(code)
-                .setIssuedAt(now)
-                .claim(AUTHORIZATION_KEY, user.getAuthority())
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setSubject(email)
+                .claim("AUTHORIZATION_KEY", user.getAuthority())
+                .signWith(jwtProperties.getSecretKey(), SignatureAlgorithm.HS256)
                 .setExpiration(new Date(now.getTime() + validation))
                 .compact();
     }
 
-    public String extractEmail(HttpServletRequest request) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(request.getHeader("Authorization").split(" ")[1].trim())
-                .getBody()
-                .getSubject();
-    }
-
-    public boolean validateToken(String jwt) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(jwt);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public Authentication getAuthentication(String jwt) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORIZATION_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .toList();
-        AuthDetails authDetails = (AuthDetails) authDetailsService.loadUserByUsername(claims.getSubject());
-        return new UsernamePasswordAuthenticationToken(authDetails, jwt, authorities);
-    }
-
-    public String extractEmailWithRefreshToken(String refreshToken) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(refreshToken)
-                .getBody()
-                .getSubject();
-    }
 }
