@@ -1,4 +1,4 @@
-package com.major.club.global.auth.details;
+package com.major.club.global.security.auth;
 
 import com.major.club.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;

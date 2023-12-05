@@ -5,7 +5,7 @@ import com.major.club.domain.application.presentation.dto.request.ApplicationReq
 import com.major.club.domain.application.repository.ApplicationRepository;
 import com.major.club.domain.user.domain.User;
 import com.major.club.domain.user.repository.UserRepository;
-import com.major.club.global.jwt.utils.JwtProvider;
+import com.major.club.global.jwt.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ public class PostApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
     public ResponseEntity<String> execute(ApplicationRequest applicationRequest, HttpServletRequest httpServletRequest) {
-        String email = jwtProvider.extractEmail(httpServletRequest);
+        String email = jwtUtil.extractEmail(httpServletRequest);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("No user"));
         applicationRepository.save(
                 Application.builder()
