@@ -26,8 +26,17 @@ public class JwtUtil {
     }
 
     public Authentication getAuthentication(String token) {
-        AuthDetails authDetails = (AuthDetails) authDetailsService.loadUserByUsername(token);
+        AuthDetails authDetails = (AuthDetails) authDetailsService.loadUserByUsername(extractEmailFromToken(token));
         return new UsernamePasswordAuthenticationToken(authDetails, token, authDetails.getAuthorities());
+    }
+
+    private String extractEmailFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(jwtProperties.getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public String extractEmail(HttpServletRequest request) {

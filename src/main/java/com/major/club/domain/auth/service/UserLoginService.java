@@ -65,6 +65,7 @@ public class UserLoginService {
             RefreshToken refreshToken = optionalRefreshToken.get();
             refreshToken.setAccessToken(access_token);
             refreshToken.setRefreshToken(refresh_token);
+            refreshTokenRepository.save(refreshToken);
         }
 
 
