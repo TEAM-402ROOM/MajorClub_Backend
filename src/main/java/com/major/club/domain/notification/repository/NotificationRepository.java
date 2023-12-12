@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findAllByIsAllStudentTrueOrClub(String club);
+
+    List<Notification> findAllByOrderByDateDesc();
 }

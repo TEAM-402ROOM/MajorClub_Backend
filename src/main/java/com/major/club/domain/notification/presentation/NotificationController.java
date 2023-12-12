@@ -2,6 +2,7 @@ package com.major.club.domain.notification.presentation;
 
 import com.major.club.domain.notification.presentation.dto.request.PostNotificationRequest;
 import com.major.club.domain.notification.presentation.dto.response.NotificationResponse;
+import com.major.club.domain.notification.service.GetAllNotificationService;
 import com.major.club.domain.notification.service.GetNotificationService;
 import com.major.club.domain.notification.service.PostNotificationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ public class NotificationController {
 
     private final PostNotificationService postNotificationService;
     private final GetNotificationService getNotificationService;
+    private final GetAllNotificationService getAllNotificationService;
 
     @PostMapping
     public ResponseEntity<String> postNotification(@RequestBody PostNotificationRequest request) {
@@ -27,5 +29,10 @@ public class NotificationController {
     @GetMapping
     public ResponseEntity<List<NotificationResponse>> getNotification(HttpServletRequest request) {
         return getNotificationService.execute(request);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<NotificationResponse>> getAllNotifications() {
+        return getAllNotificationService.execute();
     }
 }
