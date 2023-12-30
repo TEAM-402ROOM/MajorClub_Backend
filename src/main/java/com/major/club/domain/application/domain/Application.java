@@ -32,7 +32,7 @@ public class Application {
     @Column
     private String etc;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

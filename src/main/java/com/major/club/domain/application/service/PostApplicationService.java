@@ -5,11 +5,11 @@ import com.major.club.domain.application.presentation.dto.request.ApplicationReq
 import com.major.club.domain.application.repository.ApplicationRepository;
 import com.major.club.domain.user.domain.User;
 import com.major.club.domain.user.repository.UserRepository;
+import com.major.club.global.jwt.exception.UserNotFoundException;
 import com.major.club.global.jwt.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +21,7 @@ public class PostApplicationService {
     private final JwtUtil jwtUtil;
     public ResponseEntity<String> execute(ApplicationRequest applicationRequest, HttpServletRequest httpServletRequest) {
         String email = jwtUtil.extractEmail(httpServletRequest);
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("No user"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.EXCEPTION);
         applicationRepository.save(
                 Application.builder()
                         .productName(applicationRequest.getProductName())
