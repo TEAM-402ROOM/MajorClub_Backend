@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +38,6 @@ public class GetListApplicationService {
                         .usageDescription(application.getUsageDescription())
                         .etc(application.getEtc())
                         .build())
-                .collect(Collectors.toList()));
+                .toList());
     }
 }
