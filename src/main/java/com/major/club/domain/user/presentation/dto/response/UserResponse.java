@@ -1,7 +1,7 @@
 package com.major.club.domain.user.presentation.dto.response;
 
 import com.major.club.domain.club.domain.Club;
-import com.major.club.domain.user.domain.Authority;
+import leehj050211.bsmOauth.type.BsmUserRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class UserResponse {
     private String name;
-    private Authority authority;
+    private BsmUserRole role;
     private int studentNumber;
     private int grade;
     private int classNumber;

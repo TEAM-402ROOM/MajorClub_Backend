@@ -30,7 +30,7 @@ public class JwtUtil {
         return new UsernamePasswordAuthenticationToken(authDetails, token, authDetails.getAuthorities());
     }
 
-    private String extractEmailFromToken(String token) {
+    public String extractEmailFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(jwtProperties.getSecretKey())
                 .build()

@@ -2,13 +2,14 @@ package com.major.club.domain.user.domain;
 
 import com.major.club.domain.club.domain.Club;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import leehj050211.bsmOauth.type.BsmUserRole;
+import lombok.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,7 @@ public class User {
     private String name;
 
     @Column
-    private Authority authority;
+    private BsmUserRole role;
 
     @Column
     private int studentNumber;
@@ -37,21 +38,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "club_id")
+    @Setter
     private Club club;
 
-    @Builder
-    public User(String name, Authority authority, int studentNumber, int grade, int classNumber, boolean isGraduated, String email) {
-        this.name = name;
-        this.authority = authority;
-        this.studentNumber = studentNumber;
-        this.grade = grade;
-        this.classNumber = classNumber;
-        this.isGraduated = isGraduated;
-        this.email = email;
-        this.club = null;
-    }
-
-    public void setClub(Club club) {
-        this.club = club;
-    }
 }

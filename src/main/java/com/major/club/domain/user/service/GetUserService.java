@@ -24,7 +24,7 @@ public class GetUserService {
         return ResponseEntity.ok(
                 UserResponse.builder()
                         .name(user.getName())
-                        .authority(user.getAuthority())
+                        .role(user.getRole())
                         .classNumber(user.getClassNumber())
                         .club(user.getClub())
                         .grade(user.getGrade())

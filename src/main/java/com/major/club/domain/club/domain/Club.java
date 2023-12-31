@@ -15,7 +15,6 @@ public class Club {
 
     @Column(unique = true)
     private String name;
-
     @Builder
     public Club(String name) {
         this.name = name;
